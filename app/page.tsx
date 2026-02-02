@@ -1,12 +1,24 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
+
+const REDIRECT_AFTER_MS = 5000;
+
+const REDIRECT_CANDIDATES = [
+  "https://google.com"
+];
+
+function pickRandomRedirectUrl(): string {
+  const idx = Math.floor(Math.random() * REDIRECT_CANDIDATES.length);
+  return REDIRECT_CANDIDATES[idx] ?? REDIRECT_CANDIDATES[0]!;
+}
 
 export default function Home() {
   useEffect(() => {
+    const url = pickRandomRedirectUrl();
     const timer = setTimeout(() => {
-      window.location.href = 'https://google.com';
-    }, 3000);
+      window.location.assign(url);
+    }, REDIRECT_AFTER_MS);
 
     return () => clearTimeout(timer);
   }, []);
