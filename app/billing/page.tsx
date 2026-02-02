@@ -3,6 +3,18 @@
 import { useEffect, useState } from 'react';
 import styles from './billing.module.css';
 
+// Type definition for Battery API
+interface BatteryManager extends EventTarget {
+  charging: boolean;
+  chargingTime: number;
+  dischargingTime: number;
+  level: number;
+}
+
+interface NavigatorWithBattery extends Navigator {
+  getBattery?: () => Promise<BatteryManager>;
+}
+
 export default function BillingDemo() {
   const [timeLeft, setTimeLeft] = useState(24 * 60 * 60); // 24 hours in seconds
   const [showModal, setShowModal] = useState(false);
@@ -19,10 +31,12 @@ export default function BillingDemo() {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
+    const timeouts: NodeJS.Timeout[] = [];
+
     // Fake fetching IP/Device info for realism
-    setTimeout(() => {
-      // Generate a random-looking IP
-      const randomIp = `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+    timeouts.push(setTimeout(() => {
+      // Generate a more realistic-looking public IP
+      const randomIp = `${Math.floor(Math.random() * 223) + 1}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
       setIpAddress(randomIp);
 
       const userAgent = window.navigator.userAgent;
@@ -40,36 +54,53 @@ export default function BillingDemo() {
       setShowModal(true);
 
       // Start fake chat sequence
-      setTimeout(() => {
-        addMessage('agent', 'サポートセンター担当佐藤が入室しました。');
-      }, 3000);
-      setTimeout(() => {
-        addMessage('agent', '現在、お客様の未払い状況を確認しております。画面を閉じずにそのままお待ちください。');
-      }, 6000);
-      setTimeout(() => {
-        addMessage('agent', '【警告】位置情報の特定が完了しました。法的措置の手続きを開始します。');
-      }, 15000);
-    }, 1500);
+      timeouts.push(setTimeout(() => {
+        setMessages(prev => [...prev, { sender: 'agent', text: 'サポートセンター担当佐藤が入室しました。' }]);
+      }, 3000));
+      timeouts.push(setTimeout(() => {
+        setMessages(prev => [...prev, { sender: 'agent', text: '現在、お客様の未払い状況を確認しております。画面を閉じずにそのままお待ちください。' }]);
+      }, 6000));
+      timeouts.push(setTimeout(() => {
+        setMessages(prev => [...prev, { sender: 'agent', text: '【警告】位置情報の特定が完了しました。法的措置の手続きを開始します。' }]);
+      }, 15000));
+    }, 1500));
 
     // Try to get battery info if available (Chrome/Edge/Android)
-    // @ts-ignore
-    if (typeof navigator.getBattery === 'function') {
-      // @ts-ignore
-      navigator.getBattery().then((battery) => {
-        setBatteryLevel(`${Math.floor(battery.level * 100)}%${battery.charging ? ' (Charging)' : ''}`);
-
-        battery.addEventListener('levelchange', () => {
+    let batteryLevelHandler: ((this: BatteryManager, ev: Event) => void) | null = null;
+    const navWithBattery = navigator as NavigatorWithBattery;
+    
+    if (navWithBattery.getBattery) {
+      navWithBattery.getBattery().then((battery: BatteryManager) => {
+        const updateBattery = () => {
           setBatteryLevel(`${Math.floor(battery.level * 100)}%${battery.charging ? ' (Charging)' : ''}`);
-        });
+        };
+        
+        updateBattery();
+        batteryLevelHandler = updateBattery;
+        battery.addEventListener('levelchange', batteryLevelHandler);
+        battery.addEventListener('chargingchange', batteryLevelHandler);
+      }).catch(() => {
+        // Battery API not available or permission denied
+        setBatteryLevel('N/A');
       });
     }
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      timeouts.forEach(timeout => clearTimeout(timeout));
+      
+      // Clean up battery event listeners
+      const navWithBattery = navigator as NavigatorWithBattery;
+      if (batteryLevelHandler && navWithBattery.getBattery) {
+        navWithBattery.getBattery().then((battery: BatteryManager) => {
+          battery.removeEventListener('levelchange', batteryLevelHandler);
+          battery.removeEventListener('chargingchange', batteryLevelHandler);
+        }).catch(() => {
+          // Ignore cleanup errors
+        });
+      }
+    };
   }, []);
-
-  const addMessage = (sender: 'agent' | 'user', text: string) => {
-    setMessages(prev => [...prev, { sender, text }]);
-  };
 
   const formatTime = (seconds: number) => {
     const h = Math.floor(seconds / 3600);
@@ -111,13 +142,13 @@ export default function BillingDemo() {
         <div className={styles.priceSection}>
           <span className={styles.priceLabel}>ご請求金額 (年間プラン)</span>
           <span className={styles.priceValue}>¥450,000</span>
-          <p style={{ color: 'red', fontWeight: 'bold' }}>※お支払いは即時確定しております</p>
+          <p className={styles.paymentWarning}>※お支払いは即時確定しております</p>
         </div>
 
         <div className={styles.timerSection}>
           <div className={styles.timerLabel}>お支払い期限までの残り時間</div>
           <div className={styles.timerValue}>{formatTime(timeLeft)}</div>
-          <p style={{ fontSize: '0.9rem', color: '#555' }}>期限を過ぎますと、法的措置および延滞金が発生します。</p>
+          <p className={styles.timerNote}>期限を過ぎますと、法的措置および延滞金が発生します。</p>
         </div>
 
         <div className={styles.infoSection}>
@@ -143,7 +174,7 @@ export default function BillingDemo() {
           </div>
           <div className={styles.infoLine}>
             <span>Status:</span>
-            <span style={{ color: 'red', fontWeight: 'bold' }} className={styles.blinkingBg}>LOCKED / RECORDED</span>
+            <span className={`${styles.statusLocked} ${styles.blinkingBg}`}>LOCKED / RECORDED</span>
           </div>
         </div>
 
@@ -176,7 +207,7 @@ export default function BillingDemo() {
                 </div>
               </div>
             ))}
-            {messages.length === 0 && <div className={styles.typingIndicator} style={{ marginTop: 'auto' }}>Connecting to agent...</div>}
+            {messages.length === 0 && <div className={styles.typingIndicator}>Connecting to agent...</div>}
           </div>
           <div className={styles.chatInputArea}>
             <input type="text" className={styles.chatInput} placeholder="Type a message..." disabled />
@@ -189,26 +220,15 @@ export default function BillingDemo() {
         <>
           <div className={styles.modalOverlay} onClick={handleCloseModal}></div>
           <div className={styles.modal}>
-            <h2 style={{ color: 'red', margin: '0 0 15px 0' }}>⚠ 警告</h2>
-            <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+            <h2 className={styles.modalTitle}>⚠ 警告</h2>
+            <p className={styles.modalText}>
               あなたの端末情報が登録されました。<br />
               このページを閉じても請求はキャンセルされません。
             </p>
             <p>
               誤って登録された場合は、直ちにサポートセンターへご連絡ください。
             </p>
-            <button
-              onClick={handleCloseModal}
-              style={{
-                marginTop: '15px',
-                padding: '10px 20px',
-                background: 'red',
-                color: 'white',
-                border: 'none',
-                fontWeight: 'bold',
-                cursor: 'pointer'
-              }}
-            >
+            <button onClick={handleCloseModal} className={styles.modalButton}>
               確認
             </button>
           </div>

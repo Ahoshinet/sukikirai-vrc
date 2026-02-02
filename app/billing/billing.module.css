@@ -479,3 +479,44 @@
         background-color: #1a0000;
     }
 }
+
+/* --- Inline style replacements --- */
+.paymentWarning {
+    color: red;
+    font-weight: bold;
+}
+
+.timerNote {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.statusLocked {
+    color: red;
+    font-weight: bold;
+}
+
+.modalTitle {
+    color: red;
+    margin: 0 0 15px 0;
+}
+
+.modalText {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.modalButton {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: red;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.modalButton:hover {
+    background: #cc0000;
+}
