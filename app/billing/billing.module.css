@@ -1,0 +1,522 @@
+.pageContainer {
+    background-color: #1a0000;
+    color: #ff3333;
+    font-family: 'Courier New', Courier, monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(0deg,
+            rgba(0, 0, 0, 0.1),
+            rgba(0, 0, 0, 0.1) 1px,
+            transparent 1px,
+            transparent 2px);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.alertBox {
+    background-color: #ff0000;
+    color: white;
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 1.5rem;
+    border: 4px solid #fff;
+    animation: flash 1s infinite alternate;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+    margin-bottom: 20px;
+    z-index: 20;
+}
+
+@keyframes flash {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0.8;
+        box-shadow: 0 0 40px rgba(255, 0, 0, 1);
+    }
+}
+
+.mainCard {
+    background-color: #fff;
+    color: #000;
+    max-width: 800px;
+    width: 100%;
+    border: 5px solid #ff0000;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 20;
+}
+
+.cardHeader {
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.cardTitle {
+    font-size: 2rem;
+    color: #cc0000;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+.cardSubtitle {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.priceSection {
+    background-color: #ffcccc;
+    border: 2px dashed;
+    border-color: #ff0000;
+    padding: 20px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.priceLabel {
+    font-size: 1.2rem;
+    display: block;
+}
+
+.priceValue {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #cc0000;
+    display: block;
+    margin: 10px 0;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+}
+
+.timerSection {
+    text-align: center;
+    margin: 20px 0;
+    font-family: 'Impact', sans-serif;
+}
+
+.timerLabel {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.timerValue {
+    font-size: 3rem;
+    color: #ff0000;
+    letter-spacing: 2px;
+}
+
+.infoSection {
+    background-color: #000;
+    color: #0f0;
+    padding: 15px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+}
+
+.infoLine {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    border-bottom: 1px dotted #333;
+    padding-bottom: 2px;
+}
+
+.actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.buttonPrimary {
+    background: linear-gradient(to bottom, #ff3333, #cc0000);
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 4px 0 #990000;
+    transition: transform 0.1s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.buttonPrimary:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+.buttonSecondary {
+    background: linear-gradient(to bottom, #666, #333);
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 4px 0 #000;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.footer {
+    margin-top: 20px;
+    color: #666;
+    font-size: 0.8rem;
+    text-align: center;
+    z-index: 20;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 5px solid red;
+    padding: 20px;
+    z-index: 100;
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    min-width: 300px;
+    animation: shake 0.5s;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 90;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(-55%, -50%) rotate(-5deg);
+    }
+
+    50% {
+        transform: translate(-45%, -50%) rotate(5deg);
+    }
+
+    75% {
+        transform: translate(-55%, -50%) rotate(-5deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+}
+
+.disclaimer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #ffff00;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    z-index: 9999;
+    font-size: 1.2rem;
+    border-top: 2px solid black;
+    display: none;
+    /* User hid this, keeping class just in case but hidden */
+}
+
+/* --- Camera Feed Styling --- */
+.cameraContainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.cameraBox {
+    width: 320px;
+    height: 240px;
+    background-color: #000;
+    border: 4px solid red;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px red;
+}
+
+.recIndicator {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: red;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    animation: flash 1s infinite steps(1);
+}
+
+.recDot {
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+.cameraText {
+    color: #fff;
+    font-family: monospace;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.faceFrame {
+    width: 150px;
+    height: 150px;
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    position: relative;
+}
+
+.faceFrame::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(0, 255, 0, 0.5);
+    animation: scan 2s infinite linear;
+}
+
+@keyframes scan {
+    0% {
+        top: 0%;
+        box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    }
+
+    50% {
+        top: 100%;
+    }
+
+    100% {
+        top: 0%;
+        box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    }
+}
+
+/* --- Chat Widget Styling --- */
+.chatWidget {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    /* Expanded by default */
+    background-color: #f0f0f0;
+    border: 1px solid #999;
+    border-bottom: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Arial', sans-serif;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    overflow: hidden;
+}
+
+.chatHeader {
+    background: #333;
+    color: #fff;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.onlineDot {
+    width: 10px;
+    height: 10px;
+    background-color: #00ff00;
+    border-radius: 50%;
+    box-shadow: 0 0 5px #00ff00;
+}
+
+.chatBody {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.messageRow {
+    display: flex;
+}
+
+.messageRow.agent {
+    justify-content: flex-start;
+}
+
+.messageRow.user {
+    justify-content: flex-end;
+}
+
+.messageBubble {
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    position: relative;
+}
+
+.messageRow.agent .messageBubble {
+    background-color: #e9e9eb;
+    color: black;
+    border-bottom-left-radius: 2px;
+}
+
+.messageRow.user .messageBubble {
+    background-color: #007bff;
+    color: white;
+    border-bottom-right-radius: 2px;
+}
+
+.typingIndicator {
+    font-style: italic;
+    font-size: 0.8rem;
+    color: #888;
+    margin-left: 10px;
+}
+
+.chatInputArea {
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background: #f9f9f9;
+    display: flex;
+    gap: 5px;
+}
+
+.chatInput {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.sendButton {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* --- Glitch Effects --- */
+.glitchText {
+    position: relative;
+    display: inline-block;
+    color: red;
+}
+
+/* Simple jitter animation enhancement can be done via JS or more complex CSS if needed */
+
+.blinkingBg {
+    animation: bgFlash 0.5s infinite;
+}
+
+@keyframes bgFlash {
+    0% {
+        background-color: #1a0000;
+    }
+
+    50% {
+        background-color: #330000;
+    }
+
+    100% {
+        background-color: #1a0000;
+    }
+}
+
+/* --- Inline style replacements --- */
+.paymentWarning {
+    color: red;
+    font-weight: bold;
+}
+
+.timerNote {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.statusLocked {
+    color: red;
+    font-weight: bold;
+}
+
+.modalTitle {
+    color: red;
+    margin: 0 0 15px 0;
+}
+
+.modalText {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.modalButton {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: red;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.modalButton:hover {
+    background: #cc0000;
+}
