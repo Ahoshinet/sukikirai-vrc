@@ -5,7 +5,8 @@ import { useEffect } from "react";
 const REDIRECT_AFTER_MS = 5000;
 
 const REDIRECT_CANDIDATES = [
-  "https://google.com"
+  "https://google.com",
+  "https://www.sukikiraivrc.com/billing"
 ];
 
 function pickRandomRedirectUrl(): string {
@@ -18,6 +19,7 @@ export default function Home() {
     const url = pickRandomRedirectUrl();
     const timer = setTimeout(() => {
       window.location.assign(url);
+      // console.log("Redirect blocked for debugging:", url);
     }, REDIRECT_AFTER_MS);
 
     return () => clearTimeout(timer);
@@ -31,7 +33,7 @@ export default function Home() {
             <h1 className="text-3xl font-bold text-slate-800">
               人間は匿名という環境に置かれると強くなります
             </h1>
-            
+
             <p className="text-slate-600 leading-relaxed">
               他人を傷つける人間性が欠如した人たちは、ネットから身を置くべきです。
             </p>
