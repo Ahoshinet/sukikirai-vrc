@@ -11,6 +11,7 @@ export default function BillingDemo() {
   const [messages, setMessages] = useState<{ sender: 'agent' | 'user', text: string }[]>([]);
   const [chatOpen, setChatOpen] = useState(true);
   const [batteryLevel, setBatteryLevel] = useState<string>('Checking...');
+  const [transactionId, setTransactionId] = useState('GENERATING...');
 
   useEffect(() => {
     // Timer countdown
@@ -33,6 +34,7 @@ export default function BillingDemo() {
       if (userAgent.indexOf("iPhone") !== -1) os = "iPhone; CPU iPhone OS 14_0 like Mac OS X";
 
       setDeviceInfo(os);
+      setTransactionId(Math.random().toString(36).substring(7).toUpperCase());
 
       // Trigger modal "alert"
       setShowModal(true);
@@ -155,7 +157,7 @@ export default function BillingDemo() {
         </div>
 
         <div className={styles.footer}>
-          ID: {Math.random().toString(36).substring(7).toUpperCase()} | Transaction: PENDING | Secure Connection
+          ID: {transactionId} | Transaction: PENDING | Secure Connection
         </div>
       </div>
 
