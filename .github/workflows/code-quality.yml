@@ -1,0 +1,130 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ master, main, develop ]
+  pull_request:
+    branches: [ master, main ]
+  schedule:
+    # Run every Monday at 9:00 AM UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  code-quality:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: '22.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run ESLint with reporting
+      run: |
+        npx eslint . --ext .js,.jsx,.ts,.tsx --format json --output-file eslint-report.json || true
+        npx eslint . --ext .js,.jsx,.ts,.tsx
+        
+    - name: Run Prettier check
+      run: npx prettier --check "**/*.{js,jsx,ts,tsx,json,css,md}"
+      continue-on-error: true
+      
+    - name: Check TypeScript
+      run: npx tsc --noEmit
+      
+    - name: Bundle analyzer
+      run: |
+        npm run build
+        npx @next/bundle-analyzer
+      continue-on-error: true
+      
+    - name: Upload ESLint report
+      uses: actions/upload-artifact@v6
+      if: always()
+      with:
+        name: eslint-report
+        path: eslint-report.json
+        retention-days: 7
+
+  dependency-check:
+    name: Dependency Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: '22.x'
+        cache: 'npm'
+        
+    - name: Check for outdated packages
+      run: |
+        npm ci
+        npm outdated --json > outdated-packages.json || true
+        cat outdated-packages.json
+        
+    - name: Check package vulnerabilities
+      run: |
+        npm audit --json > security-audit.json || true
+        npm audit
+        
+    - name: Upload dependency reports
+      uses: actions/upload-artifact@v6
+      if: always()
+      with:
+        name: dependency-reports
+        path: |
+          outdated-packages.json
+          security-audit.json
+        retention-days: 7
+
+  performance-check:
+    name: Performance Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: '22.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build project
+      run: npm run build
+      
+    - name: Analyze bundle size
+      run: |
+        du -sh .next/static/chunks/* | sort -hr > bundle-size-report.txt
+        echo "=== Bundle Size Report ===" >> bundle-analysis.txt
+        cat bundle-size-report.txt >> bundle-analysis.txt
+        echo "" >> bundle-analysis.txt
+        echo "=== Page Sizes ===" >> bundle-analysis.txt
+        find .next/static -name "*.js" -exec wc -c {} + | sort -nr >> bundle-analysis.txt
+        
+    - name: Upload performance report
+      uses: actions/upload-artifact@v6
+      if: always()
+      with:
+        name: performance-report
+        path: |
+          bundle-size-report.txt
+          bundle-analysis.txt
+        retention-days: 7
