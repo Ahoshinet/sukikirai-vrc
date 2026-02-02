@@ -1,0 +1,208 @@
+/* SNS Flame Risk - Hot Orange/Red Warning Theme */
+.pageContainer {
+    background: linear-gradient(135deg, #2d0a0a 0%, #4a1010 100%);
+    color: #ff6b35;
+    font-family: 'Arial Black', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(45deg,
+            rgba(255, 107, 53, 0.03),
+            rgba(255, 107, 53, 0.03) 2px,
+            transparent 2px,
+            transparent 4px);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.alertBox {
+    background: linear-gradient(90deg, #dc2626 0%, #ff6b35 50%, #dc2626 100%);
+    color: white;
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 1.5rem;
+    border: 3px solid #ff6b35;
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.6);
+    margin-bottom: 20px;
+    z-index: 20;
+    border-radius: 8px;
+    animation: flameGlow 2s infinite alternate;
+}
+
+@keyframes flameGlow {
+    from {
+        box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+    }
+    to {
+        box-shadow: 0 0 40px rgba(255, 107, 53, 0.9);
+    }
+}
+
+.mainCard {
+    background: linear-gradient(180deg, #ffffff 0%, #fff5f0 100%);
+    color: #4a1010;
+    max-width: 800px;
+    width: 100%;
+    border: 3px solid #ff6b35;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(220, 38, 38, 0.3);
+    position: relative;
+    z-index: 20;
+    border-radius: 12px;
+}
+
+.cardHeader {
+    border-bottom: 2px solid #ffe4d9;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.cardTitle {
+    font-size: 2rem;
+    background: linear-gradient(90deg, #dc2626 0%, #ff6b35 50%, #ff8c42 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+.cardSubtitle {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #7c2d12;
+}
+
+.actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.buttonPrimary {
+    background: linear-gradient(135deg, #dc2626 0%, #ff6b35 100%);
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.buttonPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+}
+
+.buttonPrimary:active {
+    transform: translateY(0);
+}
+
+.autoRedirectNotice {
+    margin-top: 20px;
+    text-align: center;
+    color: #dc2626;
+    font-size: 1.1rem;
+    font-weight: bold;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.footer {
+    margin-top: 20px;
+    color: #9ca3af;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.contentSection {
+    background: linear-gradient(135deg, #fff5f0 0%, #ffe4d9 100%);
+    border: 2px solid #ff6b35;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.statusBox {
+    background-color: #2d0a0a;
+    color: #fbbf24;
+    padding: 15px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.9rem;
+    margin: 20px 0;
+    border: 2px solid #ff6b35;
+    border-radius: 8px;
+}
+
+.statusLine {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    border-bottom: 1px dotted #ff6b35;
+    padding-bottom: 2px;
+}
+
+.resultItem {
+    padding: 15px;
+    margin: 10px 0;
+    border-left: 4px solid #dc2626;
+    background: linear-gradient(90deg, #fff5f0 0%, #ffe4d9 100%);
+    border-radius: 4px;
+}
+
+.resultLabel {
+    font-weight: bold;
+    color: #dc2626;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.resultValue {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff6b35;
+}
+
+.warningBadge {
+    display: inline-block;
+    background: linear-gradient(135deg, #dc2626 0%, #ff6b35 100%);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-left: 10px;
+}

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import FakeServiceLayout from './FakeServiceLayout';
-import styles from './FakeService.module.css';
+import styles from './DarkWebLeakCheck.module.css';
 
 export default function DarkWebLeakCheck() {
   const [leakCount] = useState(() => Math.floor(Math.random() * 8) + 3);

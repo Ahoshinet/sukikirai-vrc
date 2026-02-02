@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import FakeServiceLayout from './FakeServiceLayout';
-import styles from './FakeService.module.css';
+import styles from './InternetAptitudeDiagnosis.module.css';
 
 export default function InternetAptitudeDiagnosis() {
   const [aptitudeScore] = useState(() => Math.floor(Math.random() * 40) + 30);

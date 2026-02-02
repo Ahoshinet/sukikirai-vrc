@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import FakeServiceLayout from './FakeServiceLayout';
-import styles from './FakeService.module.css';
+import styles from './SNSFlameRiskScore.module.css';
 
 export default function SNSFlameRiskScore() {
   const [riskScore] = useState(() => Math.floor(Math.random() * 40) + 60);

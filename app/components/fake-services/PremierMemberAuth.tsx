@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import FakeServiceLayout from './FakeServiceLayout';
-import styles from './FakeService.module.css';
+import styles from './PremierMemberAuth.module.css';
 
 export default function PremierMemberAuth() {
   const [memberScore] = useState(() => Math.floor(Math.random() * 30) + 70);

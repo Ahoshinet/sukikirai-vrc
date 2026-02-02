@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import FakeServiceLayout from './FakeServiceLayout';
-import styles from './FakeService.module.css';
+import styles from './SuperAIBalance.module.css';
 
 export default function SuperAIBalance() {
   const [balance] = useState(() => Math.floor(Math.random() * 1000) - 500);

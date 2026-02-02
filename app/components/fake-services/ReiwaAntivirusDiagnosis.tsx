@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import FakeServiceLayout from './FakeServiceLayout';
-import styles from './FakeService.module.css';
+import styles from './ReiwaAntivirusDiagnosis.module.css';
 
 export default function ReiwaAntivirusDiagnosis() {
   const [scanProgress, setScanProgress] = useState(0);
