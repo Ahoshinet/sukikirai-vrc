@@ -1,30 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 
-const SuperAIBalance = dynamic(() => import("./components/fake-services/SuperAIBalance"), { ssr: false });
-const PremierMemberAuth = dynamic(() => import("./components/fake-services/PremierMemberAuth"), { ssr: false });
-const ReiwaAntivirusDiagnosis = dynamic(() => import("./components/fake-services/ReiwaAntivirusDiagnosis"), { ssr: false });
-const SNSFlameRiskScore = dynamic(() => import("./components/fake-services/SNSFlameRiskScore"), { ssr: false });
-const DarkWebLeakCheck = dynamic(() => import("./components/fake-services/DarkWebLeakCheck"), { ssr: false });
-const InternetAptitudeDiagnosis = dynamic(() => import("./components/fake-services/InternetAptitudeDiagnosis"), { ssr: false });
+const SuperAIJudge = dynamic(() => import("./super_ai_judge/page"), { ssr: false });
+const PremierMember = dynamic(() => import("./premier_member/page"), { ssr: false });
+const ReiwaAntivirus = dynamic(() => import("./reiwa_antivirus/page"), { ssr: false });
+const SNSFlameRisk = dynamic(() => import("./sns_flame_risk/page"), { ssr: false });
+const DarkwebLeak = dynamic(() => import("./darkweb_leak/page"), { ssr: false });
+const InternetAptitude = dynamic(() => import("./internet_aptitude/page"), { ssr: false });
 
 const FAKE_SERVICES = [
-    SuperAIBalance,
-    PremierMemberAuth,
-    ReiwaAntivirusDiagnosis,
-    SNSFlameRiskScore,
-    DarkWebLeakCheck,
-    InternetAptitudeDiagnosis,
-];
-
-const REDIRECT_AFTER_MS = 5000;
-
-const REDIRECT_CANDIDATES = [
-    "https://google.com/",
-    "https://www.sukikiraivrc.com/billing"
-    "https://www.sukikiraivrc.com/
+  SuperAIJudge,
+  PremierMember,
+  ReiwaAntivirus,
+  SNSFlameRisk,
+  DarkwebLeak,
+  InternetAptitude,
 ];
 
 export default function Home() {

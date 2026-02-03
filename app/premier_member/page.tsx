@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import FakeServiceLayout from './FakeServiceLayout';
-import styles from './PremierMemberAuth.module.css';
+import FakeServiceLayout from '../components/shared/FakeServiceLayout';
+import styles from './styles.module.css';
 
-export default function PremierMemberAuth() {
+export default function PremierMember() {
   const [memberScore] = useState(() => Math.floor(Math.random() * 30) + 70);
   const approvalStatus = memberScore > 85 ? '承認済み' : '審査中';
 

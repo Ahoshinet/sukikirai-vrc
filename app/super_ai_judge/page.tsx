@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import FakeServiceLayout from './FakeServiceLayout';
-import styles from './SuperAIBalance.module.css';
+import FakeServiceLayout from '../components/shared/FakeServiceLayout';
+import styles from './styles.module.css';
 
-export default function SuperAIBalance() {
+export default function SuperAIJudge() {
   const [balance] = useState(() => Math.floor(Math.random() * 1000) - 500);
   const [aiScore] = useState(() => Math.floor(Math.random() * 100));
 

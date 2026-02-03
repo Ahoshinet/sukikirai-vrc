@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import FakeServiceLayout from './FakeServiceLayout';
-import styles from './ReiwaAntivirusDiagnosis.module.css';
+import FakeServiceLayout from '../components/shared/FakeServiceLayout';
+import styles from './styles.module.css';
 
-export default function ReiwaAntivirusDiagnosis() {
+export default function ReiwaAntivirus() {
   const [scanProgress, setScanProgress] = useState(0);
   const [threatsFound] = useState(() => Math.floor(Math.random() * 20) + 15);
   const [infectedFiles] = useState(() => Math.floor(Math.random() * 50) + 30);

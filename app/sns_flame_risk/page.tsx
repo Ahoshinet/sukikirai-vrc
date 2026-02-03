@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import FakeServiceLayout from './FakeServiceLayout';
-import styles from './SNSFlameRiskScore.module.css';
+import FakeServiceLayout from '../components/shared/FakeServiceLayout';
+import styles from './styles.module.css';
 
-export default function SNSFlameRiskScore() {
+export default function SNSFlameRisk() {
   const [riskScore] = useState(() => Math.floor(Math.random() * 40) + 60);
   const [flameCount] = useState(() => Math.floor(Math.random() * 15) + 5);
   const riskLevel = riskScore > 80 ? '極めて高い' : riskScore > 60 ? '高い' : '中程度';

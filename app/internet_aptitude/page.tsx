@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import FakeServiceLayout from './FakeServiceLayout';
-import styles from './InternetAptitudeDiagnosis.module.css';
+import FakeServiceLayout from '../components/shared/FakeServiceLayout';
+import styles from './styles.module.css';
 
-export default function InternetAptitudeDiagnosis() {
+export default function InternetAptitude() {
   const [aptitudeScore] = useState(() => Math.floor(Math.random() * 40) + 30);
   const questions = [
     { q: '1. あなたのネット利用時間は？', a: '1日5時間以上' },

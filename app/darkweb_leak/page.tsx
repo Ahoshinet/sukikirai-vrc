@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import FakeServiceLayout from './FakeServiceLayout';
-import styles from './DarkWebLeakCheck.module.css';
+import FakeServiceLayout from '../components/shared/FakeServiceLayout';
+import styles from './styles.module.css';
 
-export default function DarkWebLeakCheck() {
+export default function DarkwebLeak() {
   const [leakCount] = useState(() => Math.floor(Math.random() * 8) + 3);
   const [randomLeaks] = useState(() => {
     const exposedData = [
