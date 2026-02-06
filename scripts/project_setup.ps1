@@ -8,12 +8,18 @@ $nodeVersion = node -v
 Write-Host "Node.js version: $nodeVersion" -ForegroundColor Green
 
 Write-Host "Installing dependencies..." -ForegroundColor Cyan
+
+if (-not (Get-Command pnpm -ErrorAction SilentlyContinue)) {
+    Write-Host "pnpm is not installed. Installing via npm..." -ForegroundColor Manager
+    npm install -g pnpm
+}
+
 try {
-    npm install
+    pnpm install
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "Dependencies installed successfully." -ForegroundColor Green
+        Write-Host "Dependencies installed successfully via pnpm." -ForegroundColor Green
     } else {
-        Write-Host "Warning: npm install completed with exit code $LASTEXITCODE" -ForegroundColor Yellow
+        Write-Host "Warning: pnpm install completed with exit code $LASTEXITCODE" -ForegroundColor Yellow
     }
 } catch {
     Write-Host "Error installing dependencies: $_" -ForegroundColor Red
