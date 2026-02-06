@@ -31,7 +31,7 @@ export default function BillingDemo() {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
-    const timeouts: NodeJS.Timeout[] = [];
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
 
     // Fake fetching IP/Device info for realism
     timeouts.push(setTimeout(() => {
