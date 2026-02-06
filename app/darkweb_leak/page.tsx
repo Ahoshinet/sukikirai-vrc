@@ -5,16 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function DarkwebLeak() {
   const router = useRouter();
-  const [leakData, setLeakData] = useState({
-    leakCount: 0,
-    randomLeaks: [] as string[],
-    leakDate: '',
-    sessionId: '',
-    particles: [] as { left: string, top: string, delay: string, text: string }[]
-  });
-  const [countdown, setCountdown] = useState(8);
-
-  useEffect(() => {
+  const [leakData] = useState(() => {
     // Client-side only generation to prevent hydration mismatch
     const exposedData = [
       'メールアドレス',
@@ -27,7 +18,7 @@ export default function DarkwebLeak() {
       '個人識別番号'
     ];
 
-    setLeakData({
+    return {
       leakCount: Math.floor(Math.random() * 8) + 3,
       randomLeaks: exposedData.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 8) + 3),
       leakDate: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('ja-JP'),
@@ -38,8 +29,9 @@ export default function DarkwebLeak() {
         delay: `${Math.random() * 3}s`,
         text: Math.random().toString(16).substring(2, 8)
       }))
-    });
-  }, []);
+    };
+  });
+  const [countdown, setCountdown] = useState(8);
 
   useEffect(() => {
     const timer = setTimeout(() => {
