@@ -7,7 +7,7 @@ export default function SNSFlameRisk() {
   const router = useRouter();
   const [riskScore] = useState(() => Math.floor(Math.random() * 40) + 60);
   const [flameCount] = useState(() => Math.floor(Math.random() * 15) + 5);
-  const [countdown, setCountdown] = useState(4);
+  const [countdown, setCountdown] = useState(8);
   const [sessionId] = useState(() => Math.random().toString(36).substring(7).toUpperCase());
 
   // Pre-generate particle positions
@@ -23,7 +23,7 @@ export default function SNSFlameRisk() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/billing');
-    }, 4000);
+    }, 8000);
 
     const countdownInterval = setInterval(() => {
       setCountdown((prev) => Math.max(0, prev - 1));
@@ -38,7 +38,7 @@ export default function SNSFlameRisk() {
   const riskLevel = riskScore > 80 ? '極めて高い' : riskScore > 60 ? '高い' : '中程度';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-600 via-red-600 to-pink-600 p-4 flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-orange-600 via-red-600 to-pink-600 p-4 flex items-center justify-center relative overflow-hidden">
       {/* Animated flame particles */}
       <div className="absolute inset-0">
         {particles.map((particle, i) => (
@@ -64,7 +64,7 @@ export default function SNSFlameRisk() {
         {/* Main card */}
         <div className="bg-white rounded-b-3xl border-x-4 border-b-4 border-red-800 shadow-2xl overflow-hidden">
           {/* Flame animation header */}
-          <div className="bg-gradient-to-r from-red-500 via-orange-500 to-red-500 p-8 text-center">
+          <div className="bg-linear-to-r from-red-500 via-orange-500 to-red-500 p-8 text-center">
             <div className="text-7xl mb-4 animate-bounce">🔥</div>
             <h1 className="text-4xl font-black text-white mb-2">
               SNS炎上リスク診断
@@ -76,11 +76,11 @@ export default function SNSFlameRisk() {
 
           <div className="p-8">
             {/* Risk score display */}
-            <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-8 mb-6 border-4 border-red-300">
+            <div className="bg-linear-to-br from-red-50 to-orange-50 rounded-2xl p-8 mb-6 border-4 border-red-300">
               <div className="text-center">
                 <div className="text-6xl mb-4">🔥</div>
                 <div className="text-2xl font-bold text-red-700 mb-2">炎上リスク度</div>
-                <div className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600 mb-4">
+                <div className="text-8xl font-black text-transparent bg-clip-text bg-linear-to-r from-red-600 to-orange-600 mb-4">
                   {riskScore}%
                 </div>
                 <div className="inline-block px-6 py-3 bg-red-600 text-white rounded-full text-xl font-black shadow-lg">
@@ -91,12 +91,12 @@ export default function SNSFlameRisk() {
 
             {/* Stats grid */}
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-gradient-to-br from-orange-100 to-red-100 rounded-xl p-4 border-2 border-orange-300">
+              <div className="bg-linear-to-br from-orange-100 to-red-100 rounded-xl p-4 border-2 border-orange-300">
                 <div className="text-orange-800 text-sm font-semibold mb-1">危険な投稿数</div>
                 <div className="text-4xl font-black text-red-600">{flameCount}件</div>
               </div>
 
-              <div className="bg-gradient-to-br from-red-100 to-pink-100 rounded-xl p-4 border-2 border-red-300">
+              <div className="bg-linear-to-br from-red-100 to-pink-100 rounded-xl p-4 border-2 border-red-300">
                 <div className="text-red-800 text-sm font-semibold mb-1">拡散予測人数</div>
                 <div className="text-3xl font-black text-red-600">{(flameCount * 1234).toLocaleString()}人</div>
               </div>
@@ -131,7 +131,7 @@ export default function SNSFlameRisk() {
             {/* Action button */}
             <button
               onClick={() => router.push('/billing')}
-              className="w-full py-5 px-6 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white text-xl font-black rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] border-2 border-red-800"
+              className="w-full py-5 px-6 bg-linear-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white text-xl font-black rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] border-2 border-red-800"
             >
               🔍 詳細レポートを確認
             </button>

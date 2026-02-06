@@ -8,13 +8,13 @@ export default function ReiwaAntivirus() {
   const [scanProgress, setScanProgress] = useState(0);
   const [threatsFound] = useState(() => Math.floor(Math.random() * 20) + 15);
   const [infectedFiles] = useState(() => Math.floor(Math.random() * 50) + 30);
-  const [countdown, setCountdown] = useState(4);
+  const [countdown, setCountdown] = useState(8);
 
   const [sessionId] = useState(() => Math.random().toString(36).substring(7).toUpperCase());
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/billing');
-    }, 4000);
+    }, 8000);
 
     const countdownInterval = setInterval(() => {
       setCountdown((prev) => Math.max(0, prev - 1));
@@ -39,7 +39,7 @@ export default function ReiwaAntivirus() {
       <div className="max-w-5xl mx-auto">
         {/* Header with shield logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-2xl shadow-lg mb-6">
+          <div className="inline-flex items-center gap-3 bg-linear-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-2xl shadow-lg mb-6">
             <div className="text-4xl">🛡️</div>
             <div>
               <div className="text-2xl font-black">令和セキュリティ 2026</div>
@@ -49,7 +49,7 @@ export default function ReiwaAntivirus() {
         </div>
 
         {/* Main scan container */}
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 shadow-2xl border-4 border-green-500 mb-8">
+        <div className="bg-linear-to-br from-green-50 to-emerald-50 rounded-3xl p-8 shadow-2xl border-4 border-green-500 mb-8">
           {/* Scan status */}
           <div className="bg-white rounded-2xl p-6 mb-6 shadow-lg border-2 border-green-200">
             <div className="flex items-center justify-between mb-4">
@@ -67,8 +67,8 @@ export default function ReiwaAntivirus() {
                 <span className="font-mono font-bold">{Math.min(scanProgress, 100)}%</span>
               </div>
               <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-300"
+                <div
+                  className="h-full bg-linear-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-300"
                   style={{ width: `${Math.min(scanProgress, 100)}%` }}
                 />
               </div>
@@ -137,7 +137,7 @@ export default function ReiwaAntivirus() {
           {/* Action button */}
           <button
             onClick={() => router.push('/billing')}
-            className="w-full py-5 px-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white text-xl font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full py-5 px-6 bg-linear-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white text-xl font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
           >
             🔍 詳細を確認して駆除する
           </button>

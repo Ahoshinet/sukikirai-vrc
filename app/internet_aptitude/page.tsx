@@ -6,13 +6,13 @@ import { useRouter } from 'next/navigation';
 export default function InternetAptitude() {
   const router = useRouter();
   const [aptitudeScore] = useState(() => Math.floor(Math.random() * 40) + 30);
-  const [countdown, setCountdown] = useState(4);
+  const [countdown, setCountdown] = useState(8);
   const [sessionId] = useState(() => Math.random().toString(36).substring(7).toUpperCase());
 
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/billing');
-    }, 4000);
+    }, 8000);
 
     const countdownInterval = setInterval(() => {
       setCountdown((prev) => Math.max(0, prev - 1));
@@ -39,14 +39,14 @@ export default function InternetAptitude() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-500 p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-linear-to-br from-teal-500 via-cyan-500 to-blue-500 p-4 flex items-center justify-center">
       <div className="max-w-4xl w-full">
         {/* Header card */}
         <div className="bg-white rounded-t-3xl p-8 border-4 border-teal-600 shadow-2xl">
           <div className="flex items-center justify-center gap-4 mb-4">
             <div className="text-6xl">🧠</div>
             <div>
-              <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
+              <h1 className="text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-teal-600 to-cyan-600">
                 ネット適性診断
               </h1>
               <p className="text-teal-700 font-semibold">
@@ -57,7 +57,7 @@ export default function InternetAptitude() {
         </div>
 
         {/* Results card */}
-        <div className="bg-gradient-to-br from-teal-50 to-cyan-50 border-x-4 border-teal-600 p-8">
+        <div className="bg-linear-to-br from-teal-50 to-cyan-50 border-x-4 border-teal-600 p-8">
           {/* Score display */}
           <div className="bg-white rounded-2xl p-8 mb-6 shadow-lg border-4 border-teal-300 text-center">
             <div className="flex items-center justify-center gap-4 mb-6">
@@ -65,11 +65,11 @@ export default function InternetAptitude() {
               <div className="text-5xl">📊</div>
             </div>
             <div className="text-2xl font-bold text-teal-700 mb-4">診断結果</div>
-            <div className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600 mb-4">
+            <div className="text-8xl font-black text-transparent bg-clip-text bg-linear-to-r from-teal-600 to-cyan-600 mb-4">
               {aptitudeScore}
               <span className="text-4xl">点</span>
             </div>
-            <div className="inline-block px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-xl font-black shadow-lg">
+            <div className="inline-block px-8 py-3 bg-linear-to-r from-orange-500 to-red-500 text-white rounded-full text-xl font-black shadow-lg">
               判定: {getJudgment(aptitudeScore)}
             </div>
           </div>
@@ -79,7 +79,7 @@ export default function InternetAptitude() {
             <div className="text-lg font-bold text-teal-800 mb-4">📋 あなたの回答結果</div>
             <div className="space-y-3">
               {questions.map((item, i) => (
-                <div key={i} className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-lg p-4 border-l-4 border-teal-500">
+                <div key={i} className="bg-linear-to-r from-teal-50 to-cyan-50 rounded-lg p-4 border-l-4 border-teal-500">
                   <div className="text-sm text-teal-700 font-semibold mb-1">{i + 1}. {item.q}</div>
                   <div className="flex items-center gap-2">
                     <span className="text-teal-600 font-bold">✓</span>
@@ -112,7 +112,7 @@ export default function InternetAptitude() {
           </div>
 
           {/* Advice section */}
-          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-6 mb-6 border-2 border-yellow-400">
+          <div className="bg-linear-to-r from-yellow-50 to-orange-50 rounded-xl p-6 mb-6 border-2 border-yellow-400">
             <div className="text-lg font-bold text-orange-800 mb-3">💡 専門家からのアドバイス</div>
             <ul className="space-y-2">
               {[
@@ -150,7 +150,7 @@ export default function InternetAptitude() {
           {/* Action button */}
           <button
             onClick={() => router.push('/billing')}
-            className="w-full py-5 px-6 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-xl font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] border-2 border-teal-700"
+            className="w-full py-5 px-6 bg-linear-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-xl font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] border-2 border-teal-700"
           >
             🔍 詳細分析レポートを見る
           </button>

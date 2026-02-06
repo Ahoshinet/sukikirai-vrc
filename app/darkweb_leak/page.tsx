@@ -8,7 +8,7 @@ export default function DarkwebLeak() {
   const [leakCount, setLeakCount] = useState(0);
   const [randomLeaks, setRandomLeaks] = useState<string[]>([]);
   const [leakDate, setLeakDate] = useState('');
-  const [countdown, setCountdown] = useState(4);
+  const [countdown, setCountdown] = useState(8);
   const [sessionId, setSessionId] = useState('');
   const [particles, setParticles] = useState<{ left: string, top: string, delay: string, text: string }[]>([]);
 
@@ -43,7 +43,7 @@ export default function DarkwebLeak() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/billing');
-    }, 4000);
+    }, 8000);
 
     const countdownInterval = setInterval(() => {
       setCountdown((prev) => Math.max(0, prev - 1));
