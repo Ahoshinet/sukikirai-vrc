@@ -68,13 +68,13 @@ export default function BillingDemo() {
     // Try to get battery info if available (Chrome/Edge/Android)
     let batteryLevelHandler: ((this: BatteryManager, ev: Event) => void) | null = null;
     const navWithBattery = navigator as NavigatorWithBattery;
-    
+
     if (navWithBattery.getBattery) {
       navWithBattery.getBattery().then((battery: BatteryManager) => {
         const updateBattery = () => {
           setBatteryLevel(`${Math.floor(battery.level * 100)}%${battery.charging ? ' (Charging)' : ''}`);
         };
-        
+
         updateBattery();
         batteryLevelHandler = updateBattery;
         battery.addEventListener('levelchange', batteryLevelHandler);
@@ -88,7 +88,7 @@ export default function BillingDemo() {
     return () => {
       clearInterval(timer);
       timeouts.forEach(timeout => clearTimeout(timeout));
-      
+
       // Clean up battery event listeners
       const navWithBattery = navigator as NavigatorWithBattery;
       if (batteryLevelHandler && navWithBattery.getBattery) {
@@ -179,10 +179,10 @@ export default function BillingDemo() {
         </div>
 
         <div className={styles.actions}>
-          <a href="#" onClick={(e) => { e.preventDefault(); alert("これはデモです。\n実際にはサポートセンターには繋がりません。"); }} className={styles.buttonPrimary}>
+          <a href="#" onClick={(e) => { e.preventDefault(); alert("ここでかけてしまうとは...\nインターネットリテラシーが皆無なのかな？"); }} className={styles.buttonPrimary}>
             📞 お客様サポートセンターへ電話
           </a>
-          <a href="#" onClick={(e) => { e.preventDefault(); alert("キャンセルに失敗しました。\nエラーコード: 0x8801\n\n(これはデモです)"); }} className={styles.buttonSecondary}>
+          <a href="#" onClick={(e) => { e.preventDefault(); alert("キャンセルに失敗しました。\nこんな架空請求詐欺に引っかかるならインターネットリテラシーを付けなおすべきだね。\nエラーコード: YourBrainIsBroken"); }} className={styles.buttonSecondary}>
             登録キャンセル申請
           </a>
         </div>

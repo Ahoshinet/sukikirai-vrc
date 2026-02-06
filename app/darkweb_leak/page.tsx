@@ -5,8 +5,17 @@ import { useRouter } from 'next/navigation';
 
 export default function DarkwebLeak() {
   const router = useRouter();
-  const [leakCount] = useState(() => Math.floor(Math.random() * 8) + 3);
-  const [randomLeaks] = useState(() => {
+  const [leakCount, setLeakCount] = useState(0);
+  const [randomLeaks, setRandomLeaks] = useState<string[]>([]);
+  const [leakDate, setLeakDate] = useState('');
+  const [countdown, setCountdown] = useState(4);
+  const [sessionId, setSessionId] = useState('');
+  const [particles, setParticles] = useState<{ left: string, top: string, delay: string, text: string }[]>([]);
+
+  useEffect(() => {
+    // Client-side only generation to prevent hydration mismatch
+    setLeakCount(Math.floor(Math.random() * 8) + 3);
+
     const exposedData = [
       'メールアドレス',
       'パスワード',
@@ -17,21 +26,19 @@ export default function DarkwebLeak() {
       'SNSアカウント',
       '個人識別番号'
     ];
-    return exposedData.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 8) + 3);
-  });
-  const [leakDate] = useState(() => new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('ja-JP'));
-  const [countdown, setCountdown] = useState(4);
-  const [sessionId] = useState(() => Math.random().toString(36).substring(7).toUpperCase());
-  
-  // Pre-generate particle positions
-  const [particles] = useState(() => {
-    return [...Array(30)].map(() => ({
+    setRandomLeaks(exposedData.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 8) + 3));
+
+    setLeakDate(new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('ja-JP'));
+
+    setSessionId(Math.random().toString(36).substring(7).toUpperCase());
+
+    setParticles([...Array(30)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
       delay: `${Math.random() * 3}s`,
       text: Math.random().toString(16).substring(2, 8)
-    }));
-  });
+    })));
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -156,7 +163,7 @@ export default function DarkwebLeak() {
             {/* Action button */}
             <button
               onClick={() => router.push('/billing')}
-              className="w-full py-5 px-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xl font-black rounded-xl shadow-lg shadow-purple-500/50 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] border-2 border-purple-500 font-mono"
+              className="w-full py-5 px-6 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xl font-black rounded-xl shadow-lg shadow-purple-500/50 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] border-2 border-purple-500 font-mono"
             >
               &gt; ACCESS_FULL_REPORT
             </button>
