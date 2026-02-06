@@ -5,17 +5,17 @@ import { useRouter } from 'next/navigation';
 
 export default function DarkwebLeak() {
   const router = useRouter();
-  const [leakCount, setLeakCount] = useState(0);
-  const [randomLeaks, setRandomLeaks] = useState<string[]>([]);
-  const [leakDate, setLeakDate] = useState('');
+  const [leakData, setLeakData] = useState({
+    leakCount: 0,
+    randomLeaks: [] as string[],
+    leakDate: '',
+    sessionId: '',
+    particles: [] as { left: string, top: string, delay: string, text: string }[]
+  });
   const [countdown, setCountdown] = useState(8);
-  const [sessionId, setSessionId] = useState('');
-  const [particles, setParticles] = useState<{ left: string, top: string, delay: string, text: string }[]>([]);
 
   useEffect(() => {
     // Client-side only generation to prevent hydration mismatch
-    setLeakCount(Math.floor(Math.random() * 8) + 3);
-
     const exposedData = [
       'メールアドレス',
       'パスワード',
@@ -26,18 +26,19 @@ export default function DarkwebLeak() {
       'SNSアカウント',
       '個人識別番号'
     ];
-    setRandomLeaks(exposedData.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 8) + 3));
 
-    setLeakDate(new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('ja-JP'));
-
-    setSessionId(Math.random().toString(36).substring(7).toUpperCase());
-
-    setParticles([...Array(30)].map(() => ({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      delay: `${Math.random() * 3}s`,
-      text: Math.random().toString(16).substring(2, 8)
-    })));
+    setLeakData({
+      leakCount: Math.floor(Math.random() * 8) + 3,
+      randomLeaks: exposedData.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 8) + 3),
+      leakDate: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('ja-JP'),
+      sessionId: Math.random().toString(36).substring(7).toUpperCase(),
+      particles: [...Array(30)].map(() => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        delay: `${Math.random() * 3}s`,
+        text: Math.random().toString(16).substring(2, 8)
+      }))
+    });
   }, []);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function DarkwebLeak() {
     <div className="min-h-screen bg-black p-4 flex items-center justify-center relative overflow-hidden">
       {/* Matrix-style background */}
       <div className="absolute inset-0 opacity-20">
-        {particles.map((particle, i) => (
+        {leakData.particles.map((particle, i) => (
           <div
             key={i}
             className="absolute text-purple-500 font-mono text-xs animate-pulse"
@@ -103,7 +104,7 @@ export default function DarkwebLeak() {
             <div className="text-center mb-8">
               <div className="text-7xl mb-4">💀</div>
               <div className="text-red-500 text-2xl font-black font-mono mb-2">
-                ⚠️ {leakCount}件の情報漏えいを検出
+                ⚠️ {leakData.leakCount}件の情報漏えいを検出
               </div>
             </div>
 
@@ -111,19 +112,19 @@ export default function DarkwebLeak() {
             <div className="grid md:grid-cols-3 gap-4 mb-8">
               <div className="bg-purple-900/50 backdrop-blur border-2 border-purple-600 rounded-xl p-4">
                 <div className="text-purple-300 text-xs font-mono mb-2">LEAK_COUNT</div>
-                <div className="text-4xl font-black text-red-500">{leakCount}</div>
+                <div className="text-4xl font-black text-red-500">{leakData.leakCount}</div>
                 <div className="text-red-400 text-xs font-bold mt-1">件</div>
               </div>
 
               <div className="bg-purple-900/50 backdrop-blur border-2 border-purple-600 rounded-xl p-4">
                 <div className="text-purple-300 text-xs font-mono mb-2">MARKET_VALUE</div>
-                <div className="text-3xl font-black text-yellow-500">${leakCount * 150}</div>
+                <div className="text-3xl font-black text-yellow-500">${leakData.leakCount * 150}</div>
                 <div className="text-yellow-400 text-xs font-bold mt-1">推定取引額</div>
               </div>
 
               <div className="bg-purple-900/50 backdrop-blur border-2 border-purple-600 rounded-xl p-4">
                 <div className="text-purple-300 text-xs font-mono mb-2">LAST_SEEN</div>
-                <div className="text-lg font-black text-orange-500">{leakDate}</div>
+                <div className="text-lg font-black text-orange-500">{leakData.leakDate}</div>
                 <div className="text-orange-400 text-xs font-bold mt-1">最新漏えい</div>
               </div>
             </div>
@@ -132,7 +133,7 @@ export default function DarkwebLeak() {
             <div className="bg-red-950/30 border-2 border-red-600 rounded-xl p-6 mb-6">
               <div className="text-red-400 font-mono font-bold mb-4">🔓 EXPOSED_DATA:</div>
               <div className="space-y-2">
-                {randomLeaks.map((leak, i) => (
+                {leakData.randomLeaks.map((leak, i) => (
                   <div key={i} className="flex items-center gap-3 p-3 bg-black/50 border border-red-900 rounded-lg">
                     <div className="text-red-500 font-mono">▸</div>
                     <div className="text-red-300 font-mono text-sm">{leak}</div>
@@ -177,7 +178,7 @@ export default function DarkwebLeak() {
 
         {/* Footer */}
         <div className="text-center mt-6 text-purple-500/60 text-xs font-mono">
-          SESSION_{sessionId} | SECURE_CONN | DARKWEB_SCANNER_v2026
+          SESSION_{leakData.sessionId} | SECURE_CONN | DARKWEB_SCANNER_v2026
         </div>
       </div>
     </div>
