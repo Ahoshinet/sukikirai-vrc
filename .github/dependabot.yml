@@ -22,6 +22,9 @@ updates:
       dependencies:
         patterns:
           - "*"
+    ignore:
+      - dependency-name: "@types/node"
+        versions: [">= 23"]
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
