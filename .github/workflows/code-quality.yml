@@ -7,7 +7,7 @@ on:
     branches: [ master, main ]
   schedule:
     # Run every Monday at 9:00 AM UTC
-    - cron: '0 9 * * 1'
+    - cron: '0 0 * * 1'
 
 jobs:
   code-quality:
@@ -18,7 +18,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v6
       with:
-        fetch-depth: 0
+        fetch-depth: 1
         
     - name: Install pnpm
       uses: pnpm/action-setup@v4
@@ -64,7 +64,7 @@ jobs:
         
     - name: Check for outdated packages
       run: |
-        pnpm install
+        pnpm install --frozen-lockfile
         pnpm outdated --json > outdated-packages.json || true
         cat outdated-packages.json
         
