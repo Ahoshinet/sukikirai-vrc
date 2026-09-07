@@ -29,7 +29,7 @@ jobs:
 
       - name: Delete action logs older than 6 months
         run: >
-          pnpm exec wrangler d1 execute sukikiraivrc --remote --yes
+          pnpm exec wrangler d1 execute sukikirai-vrc --remote --yes
           --command "DELETE FROM action_logs WHERE created_at < unixepoch('now', '-6 months');"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

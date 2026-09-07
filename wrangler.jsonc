@@ -11,15 +11,15 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "sukikiraivrc",
-      "database_id": "REPLACE_WITH_YOUR_D1_ID",
+      "database_name": "sukikirai-vrc",
+      "database_id": "b7c92d00-2051-4c72-bfe7-1e2b8f98c387",
       "migrations_dir": "drizzle"
     }
   ],
   "kv_namespaces": [
     {
       "binding": "KV",
-      "id": "REPLACE_WITH_YOUR_KV_ID"
+      "id": "b4cac04fd62d422182c1b79787aeeac8"
     }
   ],
   "vars": {

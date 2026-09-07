@@ -32,7 +32,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Apply database migrations
-        run: pnpm exec wrangler d1 migrations apply sukikiraivrc --remote
+        run: pnpm exec wrangler d1 migrations apply sukikirai-vrc --remote
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
