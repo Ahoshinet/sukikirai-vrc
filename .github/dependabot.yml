@@ -26,7 +26,10 @@ updates:
       # eslint-config-next bundles eslint-plugin-react, which crashes on ESLint 10.
       - dependency-name: "eslint"
         versions: [">= 10"]
-      # typescript-eslint refuses to load on TS 7.0; support is planned for TS 7.1.
+      # "typescript" is aliased to @typescript/typescript6 so that typescript-eslint
+      # keeps a 6.0 compiler API to import; it refuses to load under TS 7.0 and
+      # support is planned for TS 7.1. The real TypeScript 7 compiler is installed
+      # as "@typescript/native" and provides tsc.
       # https://github.com/typescript-eslint/typescript-eslint/issues/10940
       - dependency-name: "typescript"
         versions: [">= 7"]
