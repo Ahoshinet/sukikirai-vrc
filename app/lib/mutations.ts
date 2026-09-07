@@ -342,13 +342,16 @@ export async function toggleReaction(input: {
 
   const now = new Date();
   await db.batch([
-    db.insert(commentReactions).values({
-      commentId: input.commentId,
-      userId: input.userId,
-      emoji: input.emoji,
-      ip: input.meta.ip,
-      createdAt: now,
-    }),
+    db
+      .insert(commentReactions)
+      .values({
+        commentId: input.commentId,
+        userId: input.userId,
+        emoji: input.emoji,
+        ip: input.meta.ip,
+        createdAt: now,
+      })
+      .onConflictDoNothing(),
     db.insert(actionLogs).values({
       id: newId(),
       userId: input.userId,
