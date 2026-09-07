@@ -76,6 +76,22 @@ export const votes = sqliteTable(
   (t) => [primaryKey({ columns: [t.entryId, t.userId] })],
 );
 
+export const voteEvents = sqliteTable(
+  "vote_events",
+  {
+    id: text("id").primaryKey(),
+    entryId: text("entry_id")
+      .notNull()
+      .references(() => entries.id, { onDelete: "cascade" }),
+    stance: text("stance", { enum: STANCE_VALUES }).notNull(),
+    createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  },
+  (t) => [
+    index("vote_events_entry_created").on(t.entryId, t.createdAt),
+    index("vote_events_created").on(t.createdAt),
+  ],
+);
+
 export const comments = sqliteTable(
   "comments",
   {

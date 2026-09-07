@@ -8,6 +8,7 @@ import {
   entries,
   entrySources,
   reports,
+  voteEvents,
   votes,
 } from "../db/schema";
 import type { CategoryKey, Stance } from "./categories";
@@ -160,12 +161,19 @@ export async function castVote(input: {
   }
 
   const now = new Date();
-  const sukiDelta =
-    (input.stance === "suki" ? 1 : 0) - (previous === "suki" ? 1 : 0);
-  const kiraiDelta =
-    (input.stance === "kirai" ? 1 : 0) - (previous === "kirai" ? 1 : 0);
+  const previousSuki = sql<number>`coalesce((select case when stance = 'suki' then 1 else 0 end from votes where entry_id = ${input.entryId} and user_id = ${input.userId} limit 1), 0)`;
+  const previousKirai = sql<number>`coalesce((select case when stance = 'kirai' then 1 else 0 end from votes where entry_id = ${input.entryId} and user_id = ${input.userId} limit 1), 0)`;
 
   await db.batch([
+    db
+      .update(entries)
+      .set({
+        sukiCount: sql`${entries.sukiCount} + ${input.stance === "suki" ? 1 : 0} - ${previousSuki}`,
+        kiraiCount: sql`${entries.kiraiCount} + ${input.stance === "kirai" ? 1 : 0} - ${previousKirai}`,
+        totalCount: sql`${entries.totalCount} + 1 - ${previousSuki} - ${previousKirai}`,
+        updatedAt: now,
+      })
+      .where(eq(entries.id, input.entryId)),
     db
       .insert(votes)
       .values({
@@ -186,15 +194,12 @@ export async function castVote(input: {
           updatedAt: now,
         },
       }),
-    db
-      .update(entries)
-      .set({
-        sukiCount: sql`${entries.sukiCount} + ${sukiDelta}`,
-        kiraiCount: sql`${entries.kiraiCount} + ${kiraiDelta}`,
-        totalCount: sql`${entries.totalCount} + ${sukiDelta + kiraiDelta}`,
-        updatedAt: now,
-      })
-      .where(eq(entries.id, input.entryId)),
+    db.insert(voteEvents).values({
+      id: newId(),
+      entryId: input.entryId,
+      stance: input.stance,
+      createdAt: now,
+    }),
     db.insert(actionLogs).values({
       id: newId(),
       userId: input.userId,
@@ -221,24 +226,24 @@ export async function clearVote(input: {
   }
 
   const now = new Date();
-  const sukiDelta = previous === "suki" ? -1 : 0;
-  const kiraiDelta = previous === "kirai" ? -1 : 0;
+  const previousSuki = sql<number>`coalesce((select case when stance = 'suki' then 1 else 0 end from votes where entry_id = ${input.entryId} and user_id = ${input.userId} limit 1), 0)`;
+  const previousKirai = sql<number>`coalesce((select case when stance = 'kirai' then 1 else 0 end from votes where entry_id = ${input.entryId} and user_id = ${input.userId} limit 1), 0)`;
 
   await db.batch([
+    db
+      .update(entries)
+      .set({
+        sukiCount: sql`${entries.sukiCount} - ${previousSuki}`,
+        kiraiCount: sql`${entries.kiraiCount} - ${previousKirai}`,
+        totalCount: sql`${entries.totalCount} - ${previousSuki} - ${previousKirai}`,
+        updatedAt: now,
+      })
+      .where(eq(entries.id, input.entryId)),
     db
       .delete(votes)
       .where(
         and(eq(votes.entryId, input.entryId), eq(votes.userId, input.userId)),
       ),
-    db
-      .update(entries)
-      .set({
-        sukiCount: sql`${entries.sukiCount} + ${sukiDelta}`,
-        kiraiCount: sql`${entries.kiraiCount} + ${kiraiDelta}`,
-        totalCount: sql`${entries.totalCount} + ${sukiDelta + kiraiDelta}`,
-        updatedAt: now,
-      })
-      .where(eq(entries.id, input.entryId)),
     db.insert(actionLogs).values({
       id: newId(),
       userId: input.userId,
@@ -412,6 +417,7 @@ export async function createReport(input: {
         ]
           .filter(Boolean)
           .join("\n"),
+        allowed_mentions: { parse: [] },
       }),
     }).catch(() => undefined);
   }

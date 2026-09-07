@@ -1,5 +1,6 @@
 import { getSessionUser } from "../../../../lib/auth";
-import { toggleReaction } from "../../../../lib/mutations";
+import { getVote, toggleReaction } from "../../../../lib/mutations";
+import { getVisibleCommentEntry } from "../../../../lib/queries";
 import { metaFromRequest } from "../../../../lib/request";
 import { overRateLimit, rateLimited } from "../../../../lib/rate-limit";
 
@@ -19,6 +20,17 @@ export async function POST(
   }
 
   const { id } = await params;
+  const comment = await getVisibleCommentEntry(id);
+  if (!comment) {
+    return Response.json({ error: "コメントが見つかりません。" }, { status: 404 });
+  }
+  if (!(await getVote(comment.entryId, user.id))) {
+    return Response.json(
+      { error: "リアクションには対象への投票が必要です。" },
+      { status: 403 },
+    );
+  }
+
   const body = (await request.json()) as { emoji?: string };
   const emoji = (body.emoji ?? "").trim();
   if (!/^[0-9a-f]{4,5}(-[0-9a-f]{4,5})*$/i.test(emoji)) {

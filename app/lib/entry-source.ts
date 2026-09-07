@@ -72,22 +72,24 @@ export function parseEntryRef(input: string): ParsedEntryRef | null {
 
   const xUrl = value.match(X_URL);
   if (xUrl) {
+    const id = xUrl[1].toLowerCase();
     return {
       source: "x",
       category: "user",
-      id: xUrl[1],
-      normalized: `https://x.com/${xUrl[1]}`,
+      id,
+      normalized: `https://x.com/${id}`,
     };
   }
 
   if (!value.includes("/") && !value.includes(".")) {
     const handle = value.match(X_HANDLE);
     if (handle) {
+      const id = handle[1].toLowerCase();
       return {
         source: "x",
         category: "user",
-        id: handle[1],
-        normalized: `https://x.com/${handle[1]}`,
+        id,
+        normalized: `https://x.com/${id}`,
       };
     }
   }

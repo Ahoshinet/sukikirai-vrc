@@ -83,6 +83,13 @@ export async function POST(
     throw error;
   }
 
+  if (profile.category !== entry.category) {
+    return Response.json(
+      { error: "このリンクは対象のカテゴリと一致しません。" },
+      { status: 400 },
+    );
+  }
+
   const isVrchatUser =
     entry.category === "user" &&
     existing.some((source) => source.source === "vrchat");

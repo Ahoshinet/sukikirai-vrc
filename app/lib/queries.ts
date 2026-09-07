@@ -6,7 +6,7 @@ import {
   comments as commentsTable,
   entries,
   entrySources,
-  votes,
+  voteEvents,
 } from "../db/schema";
 import type {
   CategoryKey,
@@ -151,9 +151,11 @@ export async function voteTrend(entryId: string): Promise<VoteTrendPoint[]> {
   const rows = await safe(async () => {
     const db = await getDb();
     return db
-      .select({ stance: votes.stance, createdAt: votes.createdAt })
-      .from(votes)
-      .where(and(eq(votes.entryId, entryId), gte(votes.createdAt, start)));
+      .select({ stance: voteEvents.stance, createdAt: voteEvents.createdAt })
+      .from(voteEvents)
+      .where(
+        and(eq(voteEvents.entryId, entryId), gte(voteEvents.createdAt, start)),
+      );
   }, [] as { stance: Stance; createdAt: Date }[]);
 
   for (const row of rows) {
@@ -224,14 +226,66 @@ export async function searchEntries(
 export async function recentlyVoted(limit: number): Promise<Entry[]> {
   return safe(async () => {
     const db = await getDb();
+    const latestVotes = db
+      .select({
+        entryId: voteEvents.entryId,
+        latestVotedAt: sql<number>`max(${voteEvents.createdAt})`,
+      })
+      .from(voteEvents)
+      .groupBy(voteEvents.entryId)
+      .as("latest_votes");
     const rows = await db
-      .select()
+      .select({ entry: entries })
       .from(entries)
+      .innerJoin(latestVotes, eq(entries.id, latestVotes.entryId))
       .where(visible)
-      .orderBy(desc(entries.updatedAt))
+      .orderBy(desc(latestVotes.latestVotedAt))
       .limit(limit);
-    return rows.map(toEntry);
+    return rows.map((row) => toEntry(row.entry));
   }, []);
+}
+
+export async function getVisibleRootComment(
+  commentId: string,
+  entryId: string,
+): Promise<boolean> {
+  return safe(async () => {
+    const db = await getDb();
+    const rows = await db
+      .select({ id: commentsTable.id })
+      .from(commentsTable)
+      .where(
+        and(
+          eq(commentsTable.id, commentId),
+          eq(commentsTable.entryId, entryId),
+          eq(commentsTable.status, "visible"),
+          isNull(commentsTable.parentId),
+        ),
+      )
+      .limit(1);
+    return rows.length > 0;
+  }, false);
+}
+
+export async function getVisibleCommentEntry(
+  commentId: string,
+): Promise<{ entryId: string } | null> {
+  return safe(async () => {
+    const db = await getDb();
+    const rows = await db
+      .select({ entryId: commentsTable.entryId })
+      .from(commentsTable)
+      .innerJoin(entries, eq(entries.id, commentsTable.entryId))
+      .where(
+        and(
+          eq(commentsTable.id, commentId),
+          eq(commentsTable.status, "visible"),
+          visible,
+        ),
+      )
+      .limit(1);
+    return rows[0] ?? null;
+  }, null);
 }
 
 export async function recentComments(

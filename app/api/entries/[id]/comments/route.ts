@@ -1,6 +1,11 @@
 import { getSessionUser } from "../../../../lib/auth";
 import { createComment, getVote } from "../../../../lib/mutations";
-import { getComments, getEntryById, voteTrend } from "../../../../lib/queries";
+import {
+  getComments,
+  getEntryById,
+  getVisibleRootComment,
+  voteTrend,
+} from "../../../../lib/queries";
 import { metaFromRequest } from "../../../../lib/request";
 import { overRateLimit, rateLimited } from "../../../../lib/rate-limit";
 
@@ -78,6 +83,14 @@ export async function POST(
     );
   }
 
+  const parentId = body.parentId ?? null;
+  if (parentId && !(await getVisibleRootComment(parentId, id))) {
+    return Response.json(
+      { error: "返信先のコメントが見つかりません。" },
+      { status: 400 },
+    );
+  }
+
   const meta = metaFromRequest(request);
   if (await overRateLimit(meta.ip, "write")) {
     return rateLimited("write");
@@ -86,7 +99,7 @@ export async function POST(
   await createComment({
     entryId: id,
     userId: user.id,
-    parentId: body.parentId ?? null,
+    parentId,
     stance: vote,
     body: text,
     meta,

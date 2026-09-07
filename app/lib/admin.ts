@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 
 import { getDb, getEnv } from "../db/client";
 import { account, comments, entries, reports } from "../db/schema";
@@ -137,6 +137,17 @@ export async function resolveReport(
     return;
   }
 
+  const commentTarget =
+    report.targetType === "comment"
+      ? (
+          await db
+            .select({ entryId: comments.entryId })
+            .from(comments)
+            .where(eq(comments.id, report.targetId))
+            .limit(1)
+        )[0]
+      : null;
+
   const hideTarget =
     report.targetType === "entry"
       ? db
@@ -148,8 +159,23 @@ export async function resolveReport(
           .set({ status: "hidden" })
           .where(eq(comments.id, report.targetId));
 
+  const refreshCommentCount = commentTarget
+    ? db
+        .update(entries)
+        .set({
+          commentCount: sql`(
+            select count(*)
+            from comments
+            where comments.entry_id = ${commentTarget.entryId}
+              and comments.status = 'visible'
+          )`,
+        })
+        .where(eq(entries.id, commentTarget.entryId))
+    : null;
+
   await db.batch([
     hideTarget,
+    ...(refreshCommentCount ? [refreshCommentCount] : []),
     db
       .update(reports)
       .set({ status: "resolved" })
