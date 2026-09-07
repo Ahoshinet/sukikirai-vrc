@@ -1,0 +1,41 @@
+# ローカル開発用の環境変数（wrangler / OpenNext が読み込む）
+# このファイルは .gitignore 済み。本番は `wrangler secret put` で登録する。
+
+# --- 必須 ---------------------------------------------------------------
+
+# Better Auth の baseURL。ローカルでは wrangler.jsonc の vars.SITE_URL を上書きする。
+# ここが本番ドメインのままだと Discord OAuth のコールバックが本番へ飛んで失敗する。
+SITE_URL=http://localhost:3000
+
+# セッション Cookie の署名鍵。下のコマンドで生成した長いランダム文字列を入れる。
+#   node -e "console.log(crypto.randomUUID().replace(/-/g,'')+crypto.randomUUID().replace(/-/g,''))"
+BETTER_AUTH_SECRET=
+
+# コメントの匿名IDを導出するソルト。上と同じ方法で生成する。
+# 変更すると過去コメントの匿名IDがすべて変わるため、本番では固定すること。
+ANON_ID_SALT=
+
+# Discord OAuth。https://discord.com/developers/applications で作成する。
+# Redirects に http://localhost:3000/api/auth/callback/discord を追加すること。
+# 未設定でも起動はするが、ログインを伴う操作（投票・コメント・登録）は試せない。
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+
+# --- 任意 ---------------------------------------------------------------
+
+# 管理画面（/admin）に入れる Discord ユーザーID。カンマ区切りで複数可。
+# Discord の設定で開発者モードを有効にし、自分を右クリック →「ユーザーIDをコピー」で取得する。
+# 未設定なら誰も入れない（/admin は404、/api/admin は403）。
+ADMIN_DISCORD_IDS=
+
+# 通報の通知先。未設定なら通知をスキップして DB 保存のみ行う。
+REPORT_WEBHOOK_URL=
+
+# VRChat の表示名・画像の取得に使う専用アカウント。本アカウントは使わないこと。
+# 2段階認証は TOTP（認証アプリ）で設定し、そのBase32シークレットを控える。
+# 未設定の場合、ワールド（wrld_）は取得できるが、
+# ユーザー・アバター・グループ（usr_ / avtr_ / grp_）の登録は失敗する。
+# X（x.com/...）と BOOTH（booth.pm/items/...）は認証不要なので影響を受けない。
+VRCHAT_USERNAME=
+VRCHAT_PASSWORD=
+VRCHAT_TOTP_SECRET=

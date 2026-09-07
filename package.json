@@ -10,26 +10,30 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
-    "next": "^16.3.0",
+    "@mantine/core": "^9.6.0",
+    "@mantine/hooks": "^9.6.0",
+    "better-auth": "^1.7.3",
+    "drizzle-orm": "^0.45.2",
+    "emoji-picker-react": "^4.20.1",
+    "next": "^16.3.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "tailwind-merge": "^3.6.0"
+    "react-icons": "^5.7.0",
+    "valibot": "^1.4.2"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@cloudflare/workers-types": "^5.20260907.1",
+    "@opennextjs/cloudflare": "^1.20.6",
+    "@types/node": "^26.4.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
     "@typescript/native-preview": "beta",
-    "@types/node": "^22",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.0",
-    "tailwindcss": "^4"
-  },
-  "pnpm": {
-    "overrides": {
-      "postcss": ">=8.5.10",
-      "sharp": "0.35.3"
-    }
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.3.4",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
+    "typescript": "7.0.2",
+    "wrangler": "^4.129.0"
   }
 }

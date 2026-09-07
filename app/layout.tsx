@@ -1,39 +1,36 @@
+import "@mantine/core/styles.css";
 import "./globals.css";
 
 import type { Metadata } from "next";
+import { MantineProvider, mantineHtmlProps } from "@mantine/core";
+
+import { ColorSchemeScript } from "./color-scheme-script";
+
+import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import { theme } from "./theme";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "./lib/site";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "好き嫌いVRC",
-    template: "%s | 好き嫌いVRC",
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: "匿名でバカにするときって自分に当てはまってることを叩くよね",
-  metadataBase: new URL("https://www.sukikiraivrc.com/"),
-  alternates: {
-    canonical: "/",
-  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
   openGraph: {
     type: "website",
+    siteName: SITE_NAME,
     locale: "ja_JP",
-    title: "好き嫌いVRC",
-    description: "匿名でバカにするときって自分に当てはまってることを叩くよね",
     url: "/",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
   },
   twitter: {
     card: "summary",
-    title: "好き嫌いVRC",
-    description: "匿名でバカにするときって自分に当てはまってることを叩くよね",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-snippet": -1,
-      "max-image-preview": "large",
-      "max-video-preview": -1,
-    },
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
   },
 };
 
@@ -43,9 +40,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" {...mantineHtmlProps}>
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body>
-        {children}
+        <MantineProvider theme={theme} defaultColorScheme="auto">
+          <Header />
+          <main className="siteMain">{children}</main>
+          <Footer />
+        </MantineProvider>
       </body>
     </html>
   );
