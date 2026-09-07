@@ -26,6 +26,10 @@ updates:
       # eslint-config-next bundles eslint-plugin-react, which crashes on ESLint 10.
       - dependency-name: "eslint"
         versions: [">= 10"]
+      # typescript-eslint refuses to load on TS 7.0; support is planned for TS 7.1.
+      # https://github.com/typescript-eslint/typescript-eslint/issues/10940
+      - dependency-name: "typescript"
+        versions: [">= 7"]
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
