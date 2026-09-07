@@ -4,6 +4,7 @@ declare namespace Cloudflare {
   interface Env {
     DB: D1Database;
     KV: KVNamespace;
+    NEXT_INC_CACHE_R2_BUCKET: R2Bucket;
     SITE_URL: string;
     BETTER_AUTH_SECRET: string;
     DISCORD_CLIENT_ID: string;
