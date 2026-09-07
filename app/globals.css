@@ -1,1 +1,18 @@
-@import "tailwindcss";
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: light-dark(
+    var(--mantine-color-gray-0),
+    var(--mantine-color-dark-8)
+  );
+}
+
+.siteMain {
+  flex: 1;
+}

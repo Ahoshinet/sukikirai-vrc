@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sukikiraivrc",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sukikirai-vrc",
+      "database_id": "b7c92d00-2051-4c72-bfe7-1e2b8f98c387",
+      "migrations_dir": "drizzle"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "b4cac04fd62d422182c1b79787aeeac8"
+    }
+  ],
+  "vars": {
+    "SITE_URL": "https://sukikiraivrc.com"
+  }
+}

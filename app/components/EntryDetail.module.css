@@ -1,0 +1,10 @@
+.crumb {
+  font-size: var(--mantine-font-size-xs);
+  text-decoration: none;
+  color: var(--mantine-color-dimmed);
+}
+
+.crumb:hover {
+  color: var(--mantine-color-brand-6);
+  text-decoration: underline;
+}

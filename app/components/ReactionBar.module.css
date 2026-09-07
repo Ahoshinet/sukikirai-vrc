@@ -1,0 +1,45 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--mantine-radius-xl);
+  border: 1px solid transparent;
+  font-size: var(--mantine-font-size-xs);
+  line-height: 1.6;
+  cursor: pointer;
+  background-color: light-dark(
+    var(--mantine-color-gray-1),
+    var(--mantine-color-dark-5)
+  );
+  color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-dark-0));
+}
+
+.chip:hover {
+  border-color: var(--mantine-color-brand-5);
+}
+
+.chip[data-active] {
+  border-color: var(--mantine-color-brand-6);
+  background-color: light-dark(
+    var(--mantine-color-brand-0),
+    var(--mantine-color-dark-6)
+  );
+  color: var(--mantine-color-brand-6);
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pickerDropdown {
+  padding: 0;
+  overflow: hidden;
+  max-width: calc(100vw - 24px);
+}
+
+.chip img {
+  display: block;
+}

@@ -1,51 +1,45 @@
-"use client";
+import { Card, Group, Stack, Text, Title } from "@mantine/core";
+import { TbLock, TbTrophy } from "react-icons/tb";
 
-import { useEffect } from "react";
+import { CATEGORY_KEYS } from "./lib/categories";
+import { MoreLink } from "./components/MoreLink";
+import { PageLayout } from "./components/PageLayout";
+import { RankingSection } from "./components/RankingSection";
+import { RecentEntries } from "./components/RecentEntries";
 
-const REDIRECT_AFTER_MS = 5000;
-
-const REDIRECT_CANDIDATES = [
-  "https://google.com",
-  "https://www.sukikiraivrc.com/billing",
-  "/super_ai_judge",
-  "/premier_member",
-  "/reiwa_antivirus",
-  "/sns_flame_risk",
-  "/darkweb_leak",
-  "/internet_aptitude",
-];
-
-function pickRandomRedirectUrl(): string {
-  const idx = Math.floor(Math.random() * REDIRECT_CANDIDATES.length);
-  return REDIRECT_CANDIDATES[idx] ?? REDIRECT_CANDIDATES[0]!;
-}
+export const revalidate = 60;
 
 export default function Home() {
-  useEffect(() => {
-    const url = pickRandomRedirectUrl();
-    const timer = setTimeout(() => {
-      window.location.assign(url);
-      // console.log("Redirect blocked for debugging:", url);
-    }, REDIRECT_AFTER_MS);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
-      <div className="w-full max-w-2xl">
-        <div className="bg-white rounded-2xl p-8">
-          <div className="text-center space-y-4">
-            <h1 className="text-3xl font-bold text-slate-800">
-              人間は匿名という環境に置かれると強くなります
-            </h1>
+    <PageLayout>
+      <Stack gap="xl">
+        <Card withBorder radius="md" padding="lg">
+          <Group gap={8} mb={4}>
+            <TbTrophy size={22} color="var(--mantine-color-brand-6)" />
+            <Title order={1} size="h3">
+              好き嫌いVRC.com
+            </Title>
+          </Group>
+          <Text size="sm" c="dimmed">
+            VRChatで気になる物を見つけて、匿名で投票できるコミュニティサイトです。
+          </Text>
+          <Group justify="space-between" align="center" mt="sm" wrap="nowrap">
+            <Group gap={4} c="dimmed" wrap="nowrap">
+              <TbLock size={13} />
+              <Text size="xs">
+                投票にはログインが必要です。集計結果は匿名で表示されます。
+              </Text>
+            </Group>
+            <MoreLink href="/ranking">総合ランキング</MoreLink>
+          </Group>
+        </Card>
 
-            <p className="text-slate-600 leading-relaxed">
-              他人を傷つける人間性が欠如した人たちは、ネットから身を置くべきです。
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+        <RecentEntries />
+
+        {CATEGORY_KEYS.map((category) => (
+          <RankingSection key={category} category={category} limit={5} />
+        ))}
+      </Stack>
+    </PageLayout>
   );
 }

@@ -1,0 +1,56 @@
+.scroller {
+  display: flex;
+  gap: var(--mantine-spacing-sm);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: none;
+  width: 118px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  background-color: light-dark(
+    var(--mantine-color-white),
+    var(--mantine-color-dark-7)
+  );
+  text-decoration: none;
+  scroll-snap-align: start;
+}
+
+.card:hover {
+  border-color: var(--mantine-color-brand-5);
+}
+
+.name {
+  max-width: 100%;
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 700;
+  text-align: center;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
+
+.votes {
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 700;
+  color: var(--mantine-color-brand-6);
+}
+
+.category {
+  font-size: 10px;
+  color: var(--mantine-color-dimmed);
+}
