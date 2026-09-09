@@ -120,6 +120,23 @@ export async function findEntryBySource(
   return rows[0] ? toEntry(rows[0].entry) : null;
 }
 
+export async function categoryCounts(): Promise<Record<CategoryKey, number>> {
+  const empty = { user: 0, avatar: 0, world: 0, group: 0 };
+  return safe(async () => {
+    const db = await getDb();
+    const rows = await db
+      .select({ category: entries.category, value: sql<number>`count(*)` })
+      .from(entries)
+      .where(visible)
+      .groupBy(entries.category);
+    const out = { ...empty };
+    for (const row of rows) {
+      out[row.category] = row.value;
+    }
+    return out;
+  }, empty);
+}
+
 export async function getEntrySources(
   entryId: string,
 ): Promise<EntrySource[]> {

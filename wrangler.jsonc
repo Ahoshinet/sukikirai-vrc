@@ -30,6 +30,12 @@
       "bucket_name": "sukikiraivrc-cache"
     }
   ],
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "sukikiraivrc"
+    }
+  ],
   "vars": {
     "SITE_URL": "https://sukikiraivrc.com"
   }

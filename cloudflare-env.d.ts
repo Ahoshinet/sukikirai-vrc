@@ -5,6 +5,7 @@ declare namespace Cloudflare {
     DB: D1Database;
     KV: KVNamespace;
     NEXT_INC_CACHE_R2_BUCKET: R2Bucket;
+    WORKER_SELF_REFERENCE: Service;
     SITE_URL: string;
     BETTER_AUTH_SECRET: string;
     DISCORD_CLIENT_ID: string;

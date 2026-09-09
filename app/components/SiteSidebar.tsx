@@ -3,16 +3,16 @@ import { Box, Card, Group, Stack, Text, Title } from "@mantine/core";
 import { TbInfoCircle, TbMessageCircle } from "react-icons/tb";
 
 import { CATEGORIES, CATEGORY_KEYS } from "../lib/categories";
-import { listEntries, recentComments } from "../lib/queries";
+import { categoryCounts, recentComments } from "../lib/queries";
 import { CategoryIcon } from "./CategoryIcon";
 import { CommentDigest } from "./CommentList";
 import { MoreLink } from "./MoreLink";
 import classes from "./SiteSidebar.module.css";
 
 export async function SiteSidebar() {
-  const [comments, ...counts] = await Promise.all([
+  const [comments, counts] = await Promise.all([
     recentComments(5, 0),
-    ...CATEGORY_KEYS.map((key) => listEntries(key, 1, 0)),
+    categoryCounts(),
   ]);
 
   return (
@@ -35,7 +35,7 @@ export async function SiteSidebar() {
           カテゴリ
         </Title>
         <Stack gap={2}>
-          {CATEGORY_KEYS.map((key, index) => {
+          {CATEGORY_KEYS.map((key) => {
             const category = CATEGORIES[key];
             return (
               <Link
@@ -46,7 +46,7 @@ export async function SiteSidebar() {
                 <CategoryIcon category={key} size={16} />
                 <span>{category.label}</span>
                 <Text size="xs" c="dimmed" ml="auto">
-                  {counts[index]?.total ?? 0}
+                  {counts[key]}
                 </Text>
               </Link>
             );
