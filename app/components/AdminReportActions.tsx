@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button, Group } from "@mantine/core";
 import { TbEyeOff, TbExternalLink, TbX } from "react-icons/tb";
@@ -8,11 +7,12 @@ import { TbEyeOff, TbExternalLink, TbX } from "react-icons/tb";
 export function AdminReportActions({
   reportId,
   href,
+  onDone,
 }: {
   reportId: string;
   href: string | null;
+  onDone: () => Promise<void> | void;
 }) {
-  const router = useRouter();
   const [busy, setBusy] = useState(false);
 
   const send = async (action: "hide" | "reject") => {
@@ -23,7 +23,7 @@ export function AdminReportActions({
       body: JSON.stringify({ reportId, action }),
     });
     setBusy(false);
-    router.refresh();
+    await onDone();
   };
 
   return (

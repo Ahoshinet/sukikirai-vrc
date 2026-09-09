@@ -1,6 +1,15 @@
-import { getAdminUser, resolveReport } from "../../../lib/admin";
+import { getAdminUser, listReports, resolveReport } from "../../../lib/admin";
 import { log } from "../../../lib/mutations";
 import { metaFromRequest } from "../../../lib/request";
+
+export async function GET() {
+  const admin = await getAdminUser();
+  if (!admin) {
+    return Response.json({ error: "権限がありません。" }, { status: 403 });
+  }
+
+  return Response.json({ reports: await listReports("open") });
+}
 
 export async function POST(request: Request) {
   const admin = await getAdminUser();
