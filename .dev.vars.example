@@ -28,6 +28,11 @@ DISCORD_CLIENT_SECRET=
 # 未設定なら誰も入れない（/admin は404、/api/admin は403）。
 ADMIN_DISCORD_IDS=
 
+# Sentry のエラー追跡。未設定ならエラー送信をスキップする。
+# Sentry のプロジェクト設定 → Client Keys (DSN) の値。
+SENTRY_DSN=
+SENTRY_ENVIRONMENT=development
+
 # 通報の通知先。未設定なら通知をスキップして DB 保存のみ行う。
 REPORT_WEBHOOK_URL=
 
