@@ -6,10 +6,8 @@ overrides:
   sharp: 0.35.4
   esbuild: '>=0.25.0'
 
-onlyBuiltDependencies:
-  - esbuild
-  - workerd
-
-ignoredBuiltDependencies:
-  - sharp
-  - unrs-resolver
+allowBuilds:
+  esbuild: true
+  workerd: true
+  sharp: false
+  unrs-resolver: false
