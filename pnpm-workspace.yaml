@@ -3,7 +3,7 @@ packages:
 
 overrides:
   postcss: '>=8.5.10'
-  sharp: 0.35.3
+  sharp: 0.35.4
   esbuild: '>=0.25.0'
 
 onlyBuiltDependencies:
