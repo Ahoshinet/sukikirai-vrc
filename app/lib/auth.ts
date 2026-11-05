@@ -3,10 +3,11 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { headers } from "next/headers";
 
 import { getDb, getEnv, type Database } from "../db/client";
+import type { AppEnv } from "./env";
 import * as schema from "../db/schema";
 import { log } from "./mutations";
 
-function createAuth(db: Database, env: CloudflareEnv) {
+function createAuth(db: Database, env: AppEnv) {
   return betterAuth({
     baseURL: env.SITE_URL,
     secret: env.BETTER_AUTH_SECRET,
