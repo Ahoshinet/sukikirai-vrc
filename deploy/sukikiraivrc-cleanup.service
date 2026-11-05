@@ -1,0 +1,11 @@
+# /etc/systemd/system/sukikiraivrc-cleanup.service
+[Unit]
+Description=sukikiraivrc weekly cleanup
+
+[Service]
+Type=oneshot
+User=sukikiraivrc
+Group=sukikiraivrc
+WorkingDirectory=/opt/sukikiraivrc/current
+EnvironmentFile=/etc/sukikiraivrc/env
+ExecStart=/usr/bin/node scripts/cleanup.mjs

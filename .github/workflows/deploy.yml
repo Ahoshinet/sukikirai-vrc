@@ -7,13 +7,15 @@ on:
 
 concurrency:
   group: deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
-    name: Deploy to Cloudflare
+    name: Deploy to VPS
     runs-on: ubuntu-latest
     environment: production
+    env:
+      APP_DIR: /opt/sukikiraivrc
 
     steps:
       - name: Checkout code
@@ -31,17 +33,78 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Apply database migrations
-        run: pnpm exec wrangler d1 migrations apply sukikirai-vrc --remote
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
       - name: Build
-        run: pnpm exec opennextjs-cloudflare build
+        run: pnpm run build
 
-      - name: Deploy
-        run: pnpm exec opennextjs-cloudflare deploy
+      - name: Assemble release
+        run: |
+          set -euo pipefail
+          out=.next/standalone
+          cp -r .next/static "$out/.next/static"
+          if [ -d public ]; then cp -r public "$out/public"; fi
+          rm -rf "$out/drizzle" "$out/scripts"
+          cp -r drizzle "$out/drizzle"
+          cp -r scripts "$out/scripts"
+          # ビルド時に作られた空の SQLite は持ち込まない
+          rm -rf "$out/data"
+
+      - name: Configure SSH
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Upload release
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT || '22' }}
+        run: |
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p $VPS_PORT" \
+            .next/standalone/ \
+            "$VPS_USER@$VPS_HOST:$APP_DIR/releases/$GITHUB_SHA/"
+
+      - name: Activate release
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT || '22' }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" \
+            "APP_DIR=$APP_DIR RELEASE=$GITHUB_SHA bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$APP_DIR"
+          previous=$(readlink -f current || true)
+          ln -sfn "releases/$RELEASE" current.tmp
+          mv -Tf current.tmp current
+          sudo systemctl restart sukikiraivrc
+
+          # 起動時にマイグレーションが走るので、応答が返るまで待つ
+          for _ in $(seq 1 30); do
+            if curl -fsS -o /dev/null http://127.0.0.1:3000/robots.txt; then
+              ok=1
+              break
+            fi
+            sleep 2
+          done
+
+          if [ "${ok:-}" != 1 ]; then
+            echo "health check failed" >&2
+            sudo journalctl -u sukikiraivrc -n 50 --no-pager >&2 || true
+            if [ -n "$previous" ] && [ "$previous" != "$(readlink -f current)" ]; then
+              ln -sfn "$previous" current.tmp
+              mv -Tf current.tmp current
+              sudo systemctl restart sukikiraivrc
+              echo "rolled back to $previous" >&2
+            fi
+            exit 1
+          fi
+
+          # 直近 5 リリースだけ残す
+          ls -1dt releases/*/ | tail -n +6 | xargs -r rm -rf
+          REMOTE

@@ -1,0 +1,27 @@
+# /etc/systemd/system/sukikiraivrc.service
+[Unit]
+Description=sukikiraivrc (Next.js standalone)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sukikiraivrc
+Group=sukikiraivrc
+WorkingDirectory=/opt/sukikiraivrc/current
+EnvironmentFile=/etc/sukikiraivrc/env
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOSTNAME=127.0.0.1
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=5
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/sukikiraivrc /var/lib/sukikiraivrc
+
+[Install]
+WantedBy=multi-user.target
