@@ -4,5 +4,7 @@ export default {
   schema: "./app/db/schema.ts",
   out: "./drizzle",
   dialect: "sqlite",
-  driver: "d1-http",
+  dbCredentials: {
+    url: process.env.DATABASE_URL ?? "file:data/sukikirai.db",
+  },
 } satisfies Config;

@@ -12,7 +12,6 @@ import { fetchXProfile } from "./x";
 export { FetchProfileError, type FetchedProfile };
 
 interface FetchEnv {
-  KV: KVNamespace;
   VRCHAT_USERNAME?: string;
   VRCHAT_PASSWORD?: string;
   VRCHAT_TOTP_SECRET?: string;

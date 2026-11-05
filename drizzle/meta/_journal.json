@@ -15,6 +15,13 @@
       "when": 1788781313321,
       "tag": "0001_confused_franklin_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1793890443160,
+      "tag": "0002_kv_store",
+      "breakpoints": true
     }
   ]
 }

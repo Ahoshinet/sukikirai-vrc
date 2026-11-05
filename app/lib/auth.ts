@@ -3,10 +3,11 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { headers } from "next/headers";
 
 import { getDb, getEnv, type Database } from "../db/client";
+import type { AppEnv } from "./env";
 import * as schema from "../db/schema";
 import { log } from "./mutations";
 
-function createAuth(db: Database, env: CloudflareEnv) {
+function createAuth(db: Database, env: AppEnv) {
   return betterAuth({
     baseURL: env.SITE_URL,
     secret: env.BETTER_AUTH_SECRET,
@@ -36,7 +37,7 @@ function createAuth(db: Database, env: CloudflareEnv) {
               await log(session.userId, "login", "session", session.id, {
                 ip: session.ipAddress || "unknown",
                 userAgent: session.userAgent ?? null,
-                country: h.get("cf-ipcountry"),
+                country: h.get(env.CLIENT_COUNTRY_HEADER),
               });
             } catch {
               // ログインの記録に失敗してもログイン自体は続行する
@@ -48,7 +49,8 @@ function createAuth(db: Database, env: CloudflareEnv) {
     advanced: {
       cookiePrefix: "skv",
       ipAddress: {
-        ipAddressHeaders: ["cf-connecting-ip", "x-forwarded-for"],
+        // x-forwarded-for はクライアントが偽装できるので使わない
+        ipAddressHeaders: [env.CLIENT_IP_HEADER],
       },
     },
   });

@@ -1,3 +1,4 @@
+import { kvDelete, kvGet, kvPut } from "../kv";
 import { generateTotp } from "./totp";
 import { FetchProfileError, USER_AGENT, type FetchedProfile } from "./types";
 
@@ -6,7 +7,6 @@ const COOKIE_KEY = "vrchat:auth-cookie";
 const COOKIE_TTL = 60 * 60 * 24 * 25;
 
 interface VrchatEnv {
-  KV: KVNamespace;
   VRCHAT_USERNAME?: string;
   VRCHAT_PASSWORD?: string;
   VRCHAT_TOTP_SECRET?: string;
@@ -85,11 +85,11 @@ async function login(env: VrchatEnv): Promise<string> {
     }
     const twoFactorCookie = readAuthCookie(verify);
     const merged = twoFactorCookie ? `${cookie}; ${twoFactorCookie}` : cookie;
-    await env.KV.put(COOKIE_KEY, merged, { expirationTtl: COOKIE_TTL });
+    await kvPut(COOKIE_KEY, merged, { expirationTtl: COOKIE_TTL });
     return merged;
   }
 
-  await env.KV.put(COOKIE_KEY, cookie, { expirationTtl: COOKIE_TTL });
+  await kvPut(COOKIE_KEY, cookie, { expirationTtl: COOKIE_TTL });
   return cookie;
 }
 
@@ -98,13 +98,13 @@ async function authedGet(
   path: string,
   retry = true,
 ): Promise<Response> {
-  const cookie = (await env.KV.get(COOKIE_KEY)) ?? (await login(env));
+  const cookie = (await kvGet(COOKIE_KEY)) ?? (await login(env));
   const response = await fetch(`${API}${path}`, {
     headers: baseHeaders(cookie),
   });
 
   if (response.status === 401 && retry) {
-    await env.KV.delete(COOKIE_KEY);
+    await kvDelete(COOKIE_KEY);
     return authedGet(env, path, false);
   }
   return response;

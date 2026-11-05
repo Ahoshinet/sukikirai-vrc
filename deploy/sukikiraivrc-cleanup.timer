@@ -1,0 +1,11 @@
+# /etc/systemd/system/sukikiraivrc-cleanup.timer
+# 旧 GitHub Actions の cron（日曜 18:00 UTC = 月曜 03:00 JST）と同じタイミング
+[Unit]
+Description=Run sukikiraivrc cleanup weekly
+
+[Timer]
+OnCalendar=Mon *-*-* 03:00:00 Asia/Tokyo
+Persistent=true
+
+[Install]
+WantedBy=timers.target

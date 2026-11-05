@@ -8,6 +8,5 @@ overrides:
 
 allowBuilds:
   esbuild: true
-  workerd: true
   sharp: false
   unrs-resolver: false
