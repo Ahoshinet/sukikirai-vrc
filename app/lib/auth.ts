@@ -37,7 +37,7 @@ function createAuth(db: Database, env: AppEnv) {
               await log(session.userId, "login", "session", session.id, {
                 ip: session.ipAddress || "unknown",
                 userAgent: session.userAgent ?? null,
-                country: h.get("cf-ipcountry"),
+                country: h.get(env.CLIENT_COUNTRY_HEADER),
               });
             } catch {
               // ログインの記録に失敗してもログイン自体は続行する
@@ -49,7 +49,8 @@ function createAuth(db: Database, env: AppEnv) {
     advanced: {
       cookiePrefix: "skv",
       ipAddress: {
-        ipAddressHeaders: ["cf-connecting-ip", "x-forwarded-for"],
+        // x-forwarded-for はクライアントが偽装できるので使わない
+        ipAddressHeaders: [env.CLIENT_IP_HEADER],
       },
     },
   });
