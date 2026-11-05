@@ -191,3 +191,14 @@ export const actionLogs = sqliteTable(
     index("action_logs_created").on(t.createdAt),
   ],
 );
+
+// Workers KV の置き換え。期限付きの小さな値（外部サービスの認証Cookieなど）を保存する。
+export const kvStore = sqliteTable(
+  "kv_store",
+  {
+    key: text("key").primaryKey(),
+    value: text("value").notNull(),
+    expiresAt: integer("expires_at", { mode: "timestamp" }),
+  },
+  (t) => [index("kv_store_expires").on(t.expiresAt)],
+);
