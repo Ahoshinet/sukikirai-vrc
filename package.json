@@ -11,30 +11,30 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@mantine/core": "^9.7.4",
-    "@mantine/hooks": "^9.7.4",
-    "better-auth": "^1.7.14",
+    "@mantine/core": "^9.8.0",
+    "@mantine/hooks": "^9.8.0",
+    "better-auth": "^1.7.22",
     "drizzle-orm": "^0.45.4",
     "emoji-picker-react": "^5.1.4",
-    "next": "^16.4.3",
+    "next": "^16.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-icons": "^5.7.0",
     "valibot": "^1.5.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20261029.1",
-    "@opennextjs/cloudflare": "^1.20.14",
+    "@cloudflare/workers-types": "^5.20261112.1",
+    "@opennextjs/cloudflare": "^1.20.17",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@typescript/native": "npm:typescript@^7.0.2",
     "drizzle-kit": "^0.31.11",
     "eslint": "^9.39.5",
-    "eslint-config-next": "16.4.3",
+    "eslint-config-next": "16.4.6",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "wrangler": "^4.156.0"
+    "wrangler": "^4.161.0"
   }
 }
