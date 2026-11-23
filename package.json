@@ -11,9 +11,9 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@mantine/core": "^9.8.0",
-    "@mantine/hooks": "^9.8.0",
-    "better-auth": "^1.7.22",
+    "@mantine/core": "^9.8.1",
+    "@mantine/hooks": "^9.8.1",
+    "better-auth": "^1.7.26",
     "drizzle-orm": "^0.45.4",
     "emoji-picker-react": "^5.1.4",
     "next": "^16.4.6",
@@ -23,7 +23,7 @@
     "valibot": "^1.5.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20261112.1",
+    "@cloudflare/workers-types": "^5.20261119.1",
     "@opennextjs/cloudflare": "^1.20.17",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
@@ -35,6 +35,6 @@
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "wrangler": "^4.161.0"
+    "wrangler": "^4.165.0"
   }
 }
